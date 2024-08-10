@@ -2,8 +2,21 @@
 
 import Image from "next/image";
 import { PieChart } from "@mui/x-charts";
+import { useState } from "react";
 
 export default function ResultPage() {
+  const [toggle, setToggle] = useState<null | "GREEN" | "RED">(null);
+
+  const changeToggle = (option: "GREEN" | "RED") => {
+    if (option === "GREEN") {
+      if (toggle === "GREEN") setToggle(null);
+      else setToggle("GREEN");
+    } else if (option === "RED") {
+      if (toggle === "RED") setToggle(null);
+      else setToggle("RED");
+    }
+  };
+
   return (
     <div className="w-full flex flex-col bg-[#FFE6EF] h-screen overflow-y-auto pb-8 overflow-x-hidden">
       <div className="bg-[#FFE6EF] w-full flex p-[30px] items-center gap-[10px]">
@@ -24,7 +37,7 @@ export default function ResultPage() {
           </div>
         </div>
       </div>
-      <div className="px-[30px] mt-[15px]">
+      <div className="px-[30px] mt-[15px] select-none">
         {/* 하얀 박스 1 */}
         <div className="rounded-2xl shadow-xl p-[30px] bg-white mb-12">
           {/* Lv. 2 Generally Good Food */}
@@ -74,11 +87,40 @@ export default function ResultPage() {
               </div>
             </div>
           </div>
-          <div className="mt-4">
-            <span className="font-bold text-[#35B748]">▶ Benefits</span>
+          <div
+            className="mt-4 cursor-pointer"
+            onClick={() => changeToggle("GREEN")}
+          >
+            <span
+              className="font-bold text-[#35B748] inline-block"
+              style={toggle === "GREEN" ? { transform: "rotate(90deg)" } : {}}
+            >
+              ▶
+            </span>
+            <span className="font-bold text-[#35B748]"> Benefits</span>
+            {toggle === "GREEN" && (
+              <div className="ml-4 text-[#35B748]">
+                Good Good Good Good Good Good Good Good Good Good Good Good Good
+                Good Good Good Good Good
+              </div>
+            )}
           </div>
-          <div className="mt-1">
-            <span className="font-bold text-[#E84118]">▶ Potential Risks</span>
+          <div
+            className="mt-1 cursor-pointer"
+            onClick={() => changeToggle("RED")}
+          >
+            <span
+              className="font-bold text-[#E84118] inline-block"
+              style={toggle === "RED" ? { transform: "rotate(90deg)" } : {}}
+            >
+              ▶
+            </span>
+            <span className="font-bold text-[#E84118]"> Potential Risks</span>
+            {toggle === "RED" && (
+              <div className="ml-4 text-[#E84118]">
+                Lorem ipsum dolor sit amet, consectetur api- scing elit, sed do
+              </div>
+            )}
           </div>
         </div>
 
