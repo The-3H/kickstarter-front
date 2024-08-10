@@ -43,6 +43,12 @@ body {
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
 }
 
-.MuiChartsLegend-root {
-  display: none;
+.kick-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3); /* 검은색 오버레이, 투명도 조절 가능 */
 }
