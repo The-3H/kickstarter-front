@@ -19,13 +19,13 @@ export default function Header({ title }: HeaderProps) {
           />
           <div>250</div>
         </div> */}
-        <Image
+        {/* <Image
           width={100}
           height={100}
           alt="mypage"
           src={'/mypage.png'}
           className="size-[27px]"
-        />
+        /> */}
       </div>
     </header>
   );

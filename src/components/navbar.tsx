@@ -10,14 +10,14 @@ export default function NavBar() {
         height={100}
         alt="house"
         src={'/house.png'}
-        className="w-[21px] h-[26px] border-2 border-red-400"
+        className="w-[21px] h-[26px]"
       />{' '}
       <Image
         width={100}
         height={100}
         alt="calandar"
         src={'/calendar.png'}
-        className="w-[21px] h-[26px] border-2 border-red-400"
+        className="w-[21px] h-[26px]"
       />
       {router === '/kick' ? (
         <Image
@@ -25,7 +25,7 @@ export default function NavBar() {
           height={100}
           alt="pig"
           src={'/graypig.png'}
-          className="w-[97px] h-[73px] border-2 border-red-400"
+          className="w-[97px] h-[73px]"
         />
       ) : (
         <Image
@@ -33,7 +33,7 @@ export default function NavBar() {
           height={100}
           alt="pig"
           src={'/pig.png'}
-          className="w-[97px] h-[73px] border-2 border-red-400"
+          className="w-[97px] h-[73px]"
         />
       )}
       <Image
@@ -41,14 +41,14 @@ export default function NavBar() {
         height={100}
         alt="chat"
         src={'/chat.png'}
-        className="w-[39px] h-[30px] border-2 border-red-400"
+        className="w-[39px] h-[30px]"
       />
       <Image
         width={100}
         height={100}
         alt="more"
         src={'/more.png'}
-        className="w-[27px] h-[27px] border-2 border-red-400"
+        className="w-[27px] h-[27px]"
       />
     </div>
   );
