@@ -1,9 +1,12 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { PieChart } from '@mui/x-charts';
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import Image from "next/image";
+import { PieChart } from "@mui/x-charts";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import tempData, { TempData } from "@/mock/tempData";
+import getLevelMsg from "@/utils/getLevelMsg";
+import getLevelColor from "@/utils/getLevelColor";
 
 export function getWeeksSince(dateString: string) {
   // 주어진 날짜 문자열을 Date 객체로 변환
@@ -46,34 +49,35 @@ export function calculateAge(birthDateString: string) {
 }
 
 export default function ResultPage() {
-  const [toggle, setToggle] = useState<null | 'GREEN' | 'RED'>(null);
+  const [toggle, setToggle] = useState<null | "GREEN" | "RED">(null);
+  const [data, setData] = useState<TempData | null>(null);
 
-  const changeToggle = (option: 'GREEN' | 'RED') => {
-    if (option === 'GREEN') {
-      if (toggle === 'GREEN') setToggle(null);
-      else setToggle('GREEN');
-    } else if (option === 'RED') {
-      if (toggle === 'RED') setToggle(null);
-      else setToggle('RED');
+  const changeToggle = (option: "GREEN" | "RED") => {
+    if (option === "GREEN") {
+      if (toggle === "GREEN") setToggle(null);
+      else setToggle("GREEN");
+    } else if (option === "RED") {
+      if (toggle === "RED") setToggle(null);
+      else setToggle("RED");
     }
   };
 
   const searchParams = useSearchParams();
 
-  const search = searchParams.get('search');
+  const search = searchParams.get("search");
 
   const getData = async () => {
     const jj = {
-      age: calculateAge(localStorage.getItem('birth') || ''),
-      pregnancy_week: getWeeksSince(localStorage.getItem('pregnancy') || ''),
+      age: calculateAge(localStorage.getItem("birth") || ""),
+      pregnancy_week: getWeeksSince(localStorage.getItem("pregnancy") || ""),
       input: search,
     };
     console.log(jj);
     try {
-      const response = await fetch('http://147.46.62.42:58000/search', {
-        method: 'POST', // POST 메서드 명시
+      const response = await fetch("http://147.46.62.42:58000/search", {
+        method: "POST", // POST 메서드 명시
         headers: {
-          'Content-Type': 'application/json', // JSON 형식 지정
+          "Content-Type": "application/json", // JSON 형식 지정
         },
         body: JSON.stringify(jj),
       });
@@ -82,14 +86,22 @@ export default function ResultPage() {
       }
       const data = await response.json();
       console.log(data);
+      setData(data);
     } catch (error) {
-      console.error('데이터 가져오기 오류:', error);
+      console.error("데이터 가져오기 오류:", error);
     }
+    // setData(tempData);
+    // console.log(tempData);
   };
 
   useEffect(() => {
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]); // 의존성 배열을 비워 컴포넌트 마운트 시에만 실행
+
+  if (!data) return;
+
+  const nutrientEntries = Object.entries(tempData.nutrient_table.Nutrient);
 
   return (
     <div className="w-full flex flex-col bg-[#FFE6EF] h-screen overflow-y-auto pb-8 overflow-x-hidden">
@@ -99,7 +111,7 @@ export default function ResultPage() {
             width={24}
             height={24}
             alt="search"
-            src="/search.png"
+            src={`/search.png`}
             className="absolute left-4"
           />
           <input
@@ -119,80 +131,92 @@ export default function ResultPage() {
             <Image
               width={36}
               height={36}
-              alt="green-smile"
-              src="/green-smile.png"
+              alt="level"
+              src={`/lv${data.safety_level}.png`}
             />
-            <span className="font-semibold">Lv. 2</span>
-            <span className="text-[#54931F] font-semibold">
-              Generally Good Food
+            <span className="font-semibold">Lv. {data.safety_level}</span>
+            <span
+              className="font-semibold"
+              style={{ color: getLevelColor(data.safety_level) }}
+            >
+              {getLevelMsg(data.safety_level)}
             </span>
           </div>
           {/* Nutrition Info */}
           <h3 className="font-semibold mt-3">Nutrition Info</h3>
           <div className="px-2 flex flex-col gap-3 mt-4">
-            <div className="flex gap-10">
-              <div className="flex flex-1 justify-between border-b-2 pb-2">
-                <span>Carbs</span>
-                <span>3.0g</span>
-              </div>
-              <div className="flex flex-1 justify-between border-b-2 pb-2">
-                <span>Sodium</span>
-                <span>35mg</span>
-              </div>
-            </div>
-            <div className="flex gap-8">
-              <div className="flex flex-1 justify-between border-b-2 pb-2">
-                <span>Protein</span>
-                <span>2.0g</span>
-              </div>
-              <div className="flex flex-1 justify-between border-b-2 pb-2">
-                <span>Sugar</span>
-                <span>2.0g</span>
-              </div>
-            </div>
-            <div className="flex gap-8">
-              <div className="flex flex-1 justify-between border-b-2 pb-2">
-                <span>Fat</span>
-                <span>4.4g</span>
-              </div>
-              <div className="flex flex-1 justify-between border-b-2 pb-2">
-                <span>Calories</span>
-                <span>240kcal</span>
-              </div>
-            </div>
+            {nutrientEntries.reduce(
+              (acc: JSX.Element[], [key, nutrient], index) => {
+                // Check if the current index is even
+                if (index % 2 === 0) {
+                  const nextIndex = index + 1;
+                  const hasNext = nutrientEntries[nextIndex];
+
+                  acc.push(
+                    <div
+                      key={index}
+                      className="flex gap-7"
+                    >
+                      <div className="flex flex-1 justify-between border-b-2 pb-2">
+                        <span>{nutrient.trim()}</span>
+                        <span>
+                          {tempData.nutrient_table["Amount per 100g"][
+                            key
+                          ].trim()}
+                        </span>
+                      </div>
+                      {hasNext && (
+                        <div className="flex flex-1 justify-between border-b-2 pb-2">
+                          <span>{nutrientEntries[nextIndex][1].trim()}</span>
+                          <span>
+                            {tempData.nutrient_table["Amount per 100g"][
+                              nutrientEntries[nextIndex][0]
+                            ].trim()}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                return acc;
+              },
+              []
+            )}
           </div>
           <div
             className="mt-4 cursor-pointer"
-            onClick={() => changeToggle('GREEN')}
+            onClick={() => changeToggle("GREEN")}
           >
             <span
               className="font-bold text-[#35B748] inline-block"
-              style={toggle === 'GREEN' ? { transform: 'rotate(90deg)' } : {}}
+              style={toggle === "GREEN" ? { transform: "rotate(90deg)" } : {}}
             >
               ▶
             </span>
             <span className="font-bold text-[#35B748]"> Benefits</span>
-            {toggle === 'GREEN' && (
+            {toggle === "GREEN" && (
               <div className="ml-4 text-[#35B748]">
-                Good Good Good Good Good Good Good Good Good Good Good Good Good
-                Good Good Good Good Good
+                {data.parsed_data.benefits_for_pregnancy.replace("- ", "")}
               </div>
             )}
           </div>
           <div
             className="mt-1 cursor-pointer"
-            onClick={() => changeToggle('RED')}
+            onClick={() => changeToggle("RED")}
           >
             <span
               className="font-bold text-[#E84118] inline-block"
-              style={toggle === 'RED' ? { transform: 'rotate(90deg)' } : {}}
+              style={toggle === "RED" ? { transform: "rotate(90deg)" } : {}}
             >
               ▶
             </span>
             <span className="font-bold text-[#E84118]"> Potential Risks</span>
-            {toggle === 'RED' && (
+            {toggle === "RED" && (
               <div className="ml-4 text-[#E84118]">
-                Lorem ipsum dolor sit amet, consectetur api- scing elit, sed do
+                {data.parsed_data.potential_risks_or_contraindications.replace(
+                  "- ",
+                  ""
+                )}
               </div>
             )}
           </div>
@@ -203,30 +227,43 @@ export default function ResultPage() {
           {/* 빨간색으으으으으으 */}
           <div className="flex absolute -left-8 top-0 -translate-y-1/2">
             <div className="h-[50px] bg-[#d8739b] flex items-center justify-end font-bold text-white pl-10 text-[18px]">
-              Recommended Intake
+              Preparation Tips
             </div>
             <div className="right-tri" />
           </div>
           <div className="mt-2 font-medium text-pretty">
-            Moderate consumption (1-2 servings per week)
+            {data.parsed_data.preparation_tips.replace("- ", "")}
           </div>
         </div>
 
         {/* 하얀 박스 3 */}
-        <div className="rounded-2xl shadow-xl p-[30px] bg-white mb-8 relative pb-[16px]">
+        <div className="rounded-2xl shadow-xl p-[30px] bg-white mb-12 relative pb-[16px]">
           {/* 빨간색으으으으으으 */}
           <div className="flex absolute -right-8 top-0 -translate-y-1/2">
             <div className="left-tri" />
             <div className="h-[50px] bg-[#d8739b] flex items-center justify-start font-bold text-white pr-10 text-[18px] text-nowrap">
-              Trimester-specific Recommendations
+              Alternative Options
             </div>
           </div>
           <div className="mt-2 font-medium text-pretty">
-            2nd trimester - Limit intake due to high sodium content; 3rd
-            trimester - Avoid excessive consu- mption to minimize risk of high
-            blood pressure
+            {data.parsed_data.alternative_options.replace("- ", "")}
           </div>
         </div>
+
+        {/* 하얀 박스 sdfsdfsdf */}
+        <div className="rounded-2xl shadow-xl p-[30px] bg-white mb-8 relative pb-[16px]">
+          {/* 빨간색으으으으으으 */}
+          <div className="flex absolute -left-8 top-0 -translate-y-1/2">
+            <div className="h-[50px] bg-[#d8739b] flex items-center justify-end font-bold text-white pl-10 text-[18px]">
+              Additional Information
+            </div>
+            <div className="right-tri" />
+          </div>
+          <div className="mt-2 font-medium text-pretty">
+            {data.parsed_data.additional_information.replace("- ", "")}
+          </div>
+        </div>
+
         {/* 하얀 박스 4 */}
         <div className="rounded-2xl shadow-xl p-[30px] bg-white">
           {/* Carbs : Protein : Fat */}
@@ -264,9 +301,9 @@ export default function ResultPage() {
                 series={[
                   {
                     data: [
-                      { id: 0, value: 17, label: 'Protein', color: '#F8A5C2' },
-                      { id: 1, value: 25, label: 'Fat', color: '#FFD7F8' },
-                      { id: 2, value: 58, label: 'Carbs', color: '#E86A9C' },
+                      { id: 0, value: 17, label: "Protein", color: "#F8A5C2" },
+                      { id: 1, value: 25, label: "Fat", color: "#FFD7F8" },
+                      { id: 2, value: 58, label: "Carbs", color: "#E86A9C" },
                     ],
                   },
                 ]}

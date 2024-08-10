@@ -47,7 +47,7 @@ body {
 }
 
 .kick-image::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -57,7 +57,7 @@ body {
 }
 
 .donutParent::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 14%;
   margin: 0 auto;
@@ -92,4 +92,8 @@ body {
   border-top: 25px solid transparent;
   border-left: 40px solid transparent;
   border-right: 40px solid #d8739b;
+}
+
+.MuiChartsLegend-root {
+  dispaly: none;
 }
