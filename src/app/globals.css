@@ -38,3 +38,7 @@ body {
   background-color: #ffe6e6;
   border-radius: 25px 25px 0px 25px;
 }
+
+.kick-box {
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+}

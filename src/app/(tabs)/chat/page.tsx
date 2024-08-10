@@ -1,26 +1,13 @@
 import LeftBubble from '@/components/chat/left';
 import RightBubble from '@/components/chat/right';
+import Header from '@/components/header';
 import Image from 'next/image';
 
 export default function ChatPage() {
   return (
     <>
-      <header className="w-full h-[55px] bg-[#FFE6EF] flex justify-between items-center py-[20px] px-[40px]">
-        <div className="text-[20px] font-bold">Dr. AI</div>
-        <div className="flex justify-between gap-[15px]">
-          <div className="w-[100px] h-[30px] bg-[#F8A5C2] text-white flex justify-center items-center font-bold text-[20px] rounded-2xl">
-            250
-          </div>
-          <Image
-            width={100}
-            height={100}
-            alt="mypage"
-            src={'/mypage.png'}
-            className="size-[27px]"
-          />
-        </div>
-      </header>
-      <main className="overflow-scroll w-full h-full px-[40px] flex flex-col gap-[15px] pb-[200px]">
+      <Header title={'Dr. AI'} />
+      <main className="overflow-scroll w-full h-full px-[40px] flex flex-col gap-[15px] pb-[300px] pt-[50px] scrollbar-hide">
         <LeftBubble />
         <RightBubble />
         <RightBubble />
@@ -36,7 +23,7 @@ export default function ChatPage() {
         <RightBubble />
         <RightBubble />
       </main>
-      <section className=" w-full h-[110px] py-[15px] px-[40px] border-[#DCDDE1CC] border-t-2 absolute bottom-0 flex flex-col gap-[12px] justify-center items-center bg-white">
+      <section className=" w-full h-[190px] -pt-[30px]  px-[40px] border-[#DCDDE1CC] border-t-2 absolute bottom-[50px] flex flex-col gap-[12px] justify-center items-center bg-white">
         <div className="flex gap-[12px] items-center">
           <input
             type="text"
@@ -45,7 +32,7 @@ export default function ChatPage() {
           />
           <div className="size-[30px] bg-gray-200 rounded-full"></div>
         </div>
-        <p className="text-[#DCDDE1] text-[11px] w-[260px]">
+        <p className="text-[#DCDDE1] text-[11px] w-[260px] ">
           DISCLAIMER: ChatGPT may produce inaccurate information about people,
           places, or facts
         </p>
