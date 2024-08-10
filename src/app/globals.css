@@ -22,10 +22,13 @@ body {
 
 .bubble {
   width: 270px;
-  height: 45px;
+  /* height: 45px; */
   max-height: fit-content;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 3px 0;
+  padding: 10px;
   box-shadow: 0 2px 3px rgba(87, 72, 72, 0.1);
 }
 
@@ -54,7 +57,7 @@ body {
 }
 
 .donutParent::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 14%;
   margin: 0 auto;

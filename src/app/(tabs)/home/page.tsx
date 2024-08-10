@@ -1,8 +1,45 @@
-import Image from "next/image";
+'use client';
+
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+function getDaysSince(dateString: string) {
+  // 주어진 날짜 문자열을 Date 객체로 변환
+  const givenDate = new Date(dateString);
+
+  // 현재 날짜
+  const currentDate = new Date();
+
+  // 두 날짜 간의 차이를 밀리초 단위로 계산
+  const differenceInTime = currentDate.getTime() - givenDate.getTime();
+
+  // 밀리초를 일 수로 변환
+  const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
+
+  return differenceInDays;
+}
 
 export default function HomePage() {
+  const [day, setDay] = useState<string>('');
+
+  const router = useRouter();
+
+  const [keyword, setKeyword] = useState('');
+
+  useEffect(() => {
+    const dateString = localStorage.getItem('pregnancy')!;
+    const daysPassed = getDaysSince(dateString);
+    setDay(`Day ${daysPassed}`);
+  }, []);
   return (
-    <div className="bg-[#FFE6EF] h-screen p-[40px] flex flex-col items-center">
+    <form
+      className="bg-[#FFE6EF] h-screen p-[40px] flex flex-col items-center"
+      onSubmit={(e) => {
+        e.preventDefault();
+        router.push(`/result?search=${keyword}`);
+      }}
+    >
       <h3 className="text-[40px] text-pretty font-serif font-bold mr-16">
         What do you want to eat?
       </h3>
@@ -17,6 +54,9 @@ export default function HomePage() {
         <input
           className="h-[50px] flex-[4] rounded-3xl border-[1px] shadow-xl pl-12 outline-none pr-4"
           placeholder="Search Your Food..."
+          onChange={(e) => setKeyword(e.target.value)}
+          value={keyword}
+          required
         />
       </div>
       <div className="h-[400px] mt-16">
@@ -48,7 +88,7 @@ export default function HomePage() {
             src="/party-2.png"
           />
           <div className="absolute top-0 right-10 text-[#B8B9BE] bg-white py-3 rounded-3xl px-6 font-bold">
-            Day 26
+            {day}
           </div>
         </div>
       </div>
@@ -62,6 +102,6 @@ export default function HomePage() {
           <div className="ml-2"> saved for a brighter future</div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }

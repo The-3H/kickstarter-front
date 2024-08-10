@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 export default function NavBar() {
   const router = usePathname();
   return (
-    <div className="w-full h-[55px] absolute bottom-0 flex justify-around items-end pb-[15px]">
+    <div className="w-full h-[55px] absolute bottom-0 flex justify-around items-end pb-[15px] bg-white">
       <Image
         width={100}
         height={100}

@@ -1,13 +1,23 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useState } from "react";
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Page2() {
-  const [select, setSelect] = useState<"BLUE" | "PINK" | null>(null);
+  const [select, setSelect] = useState<'BLUE' | 'PINK' | null>(null);
+
+  const router = useRouter();
 
   return (
-    <div className="bg-[#FFE6EF] h-screen flex flex-col px-[40px]">
+    <form
+      className="bg-[#FFE6EF] h-screen flex flex-col px-[40px]"
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!select) return;
+        router.push('/page3');
+      }}
+    >
       <div className="flex-1 flex flex-col justify-center">
         <div className="text-[24px] font-bold">
           A Few Quick Questions for Personalized Care
@@ -19,8 +29,8 @@ export default function Page2() {
         <div className="flex gap-6 px-4 mt-4">
           <div
             className={
-              "bg-white h-[210px] flex-1 cursor-pointer flex justify-start items-center pt-[20px] flex-col rounded-3xl ring-[#63CDDA] " +
-              `${select === "BLUE" ? "ring-4" : "ring-0"}`
+              'bg-white h-[210px] flex-1 cursor-pointer flex justify-start items-center pt-[20px] flex-col rounded-3xl ring-[#63CDDA] ' +
+              `${select === 'BLUE' ? 'ring-4' : 'ring-0'}`
             }
           >
             <Image
@@ -28,14 +38,14 @@ export default function Page2() {
               height={140}
               alt="blue"
               src="/iam-blue.png"
-              onClick={() => setSelect("BLUE")}
+              onClick={() => setSelect('BLUE')}
             />
             <span className="font-medium mt-3 text-[18px]">Pregnant</span>
           </div>
           <div
             className={
-              "bg-white h-[210px] flex-1 cursor-pointer flex justify-start items-center pt-[20px] flex-col rounded-3xl ring-[#F8A5C2] " +
-              `${select === "PINK" ? "ring-4" : "ring-0"}`
+              'bg-white h-[210px] flex-1 cursor-pointer flex justify-start items-center pt-[20px] flex-col rounded-3xl ring-[#F8A5C2] ' +
+              `${select === 'PINK' ? 'ring-4' : 'ring-0'}`
             }
           >
             <Image
@@ -43,24 +53,32 @@ export default function Page2() {
               height={140}
               alt="pink"
               src="/iam-pink.png"
-              onClick={() => setSelect("PINK")}
+              onClick={() => setSelect('PINK')}
             />
             <span className="font-medium mt-3 text-[18px]">Mother</span>
           </div>
         </div>
         <div className="h-[260px] mt-10">
-          {select === "BLUE" ? (
+          {select === 'BLUE' ? (
             <>
-              {" "}
+              {' '}
               <div className="text-[20px]">Date of pregnancy confirmation</div>
               <input
                 className="h-[60px] rounded-3xl text-center mt-4"
                 placeholder="YYYY-MM-DD"
+                required
+                onChange={(e) =>
+                  localStorage.setItem('pregnancy', e.target.value)
+                }
               />
               <div className="mt-6 text-[20px]">Estimated due date</div>
               <input
                 className="h-[60px] rounded-3xl text-center mt-4"
                 placeholder="YYYY-MM-DD"
+                required
+                onChange={(e) =>
+                  localStorage.setItem('estimated', e.target.value)
+                }
               />
             </>
           ) : (
@@ -68,9 +86,12 @@ export default function Page2() {
           )}
         </div>
       </div>
-      <div className="w-full h-[55px] bg-[#F8A5C2] mb-[20px] flex justify-center items-center text-white font-bold text-[20px] rounded-2xl">
+      <button
+        type="submit"
+        className="w-full h-[55px] bg-[#F8A5C2] mb-[20px] flex justify-center items-center text-white font-bold text-[20px] rounded-2xl"
+      >
         Next
-      </div>
-    </div>
+      </button>
+    </form>
   );
 }

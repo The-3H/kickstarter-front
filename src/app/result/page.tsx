@@ -1,21 +1,95 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { PieChart } from "@mui/x-charts";
-import { useState } from "react";
+import Image from 'next/image';
+import { PieChart } from '@mui/x-charts';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+
+export function getWeeksSince(dateString: string) {
+  // 주어진 날짜 문자열을 Date 객체로 변환
+  const givenDate = new Date(dateString);
+
+  // 현재 날짜
+  const currentDate = new Date();
+
+  // 두 날짜 간의 차이를 밀리초 단위로 계산
+  const differenceInTime = currentDate.getTime() - givenDate.getTime();
+
+  // 밀리초를 주 단위로 변환
+  const differenceInWeeks = Math.floor(
+    differenceInTime / (1000 * 3600 * 24 * 7)
+  );
+
+  return differenceInWeeks;
+}
+
+export function calculateAge(birthDateString: string) {
+  // 생년월일을 Date 객체로 변환
+  const birthDate = new Date(birthDateString);
+
+  // 현재 날짜
+  const currentDate = new Date();
+
+  // 나이 계산
+  let age = currentDate.getFullYear() - birthDate.getFullYear();
+  const monthDifference = currentDate.getMonth() - birthDate.getMonth();
+
+  // 생일이 아직 지나지 않았다면 나이에서 1을 뺍니다
+  if (
+    monthDifference < 0 ||
+    (monthDifference === 0 && currentDate.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+}
 
 export default function ResultPage() {
-  const [toggle, setToggle] = useState<null | "GREEN" | "RED">(null);
+  const [toggle, setToggle] = useState<null | 'GREEN' | 'RED'>(null);
 
-  const changeToggle = (option: "GREEN" | "RED") => {
-    if (option === "GREEN") {
-      if (toggle === "GREEN") setToggle(null);
-      else setToggle("GREEN");
-    } else if (option === "RED") {
-      if (toggle === "RED") setToggle(null);
-      else setToggle("RED");
+  const changeToggle = (option: 'GREEN' | 'RED') => {
+    if (option === 'GREEN') {
+      if (toggle === 'GREEN') setToggle(null);
+      else setToggle('GREEN');
+    } else if (option === 'RED') {
+      if (toggle === 'RED') setToggle(null);
+      else setToggle('RED');
     }
   };
+
+  const searchParams = useSearchParams();
+
+  const search = searchParams.get('search');
+
+  const getData = async () => {
+    const jj = {
+      age: calculateAge(localStorage.getItem('birth') || ''),
+      pregnancy_week: getWeeksSince(localStorage.getItem('pregnancy') || ''),
+      input: search,
+    };
+    console.log(jj);
+    try {
+      const response = await fetch('http://147.46.62.42:58000/search', {
+        method: 'POST', // POST 메서드 명시
+        headers: {
+          'Content-Type': 'application/json', // JSON 형식 지정
+        },
+        body: JSON.stringify(jj),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('데이터 가져오기 오류:', error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [search]); // 의존성 배열을 비워 컴포넌트 마운트 시에만 실행
 
   return (
     <div className="w-full flex flex-col bg-[#FFE6EF] h-screen overflow-y-auto pb-8 overflow-x-hidden">
@@ -30,7 +104,7 @@ export default function ResultPage() {
           />
           <input
             className="h-[50px] flex-[4] rounded-3xl border-[1px] shadow-xl pl-12 outline-none pr-4"
-            placeholder="Search Your Food..."
+            placeholder="Specific food name..."
           />
           <div className="flex-[1] text-[#F8A5C2] font-bold text-center">
             Cancel
@@ -89,16 +163,16 @@ export default function ResultPage() {
           </div>
           <div
             className="mt-4 cursor-pointer"
-            onClick={() => changeToggle("GREEN")}
+            onClick={() => changeToggle('GREEN')}
           >
             <span
               className="font-bold text-[#35B748] inline-block"
-              style={toggle === "GREEN" ? { transform: "rotate(90deg)" } : {}}
+              style={toggle === 'GREEN' ? { transform: 'rotate(90deg)' } : {}}
             >
               ▶
             </span>
             <span className="font-bold text-[#35B748]"> Benefits</span>
-            {toggle === "GREEN" && (
+            {toggle === 'GREEN' && (
               <div className="ml-4 text-[#35B748]">
                 Good Good Good Good Good Good Good Good Good Good Good Good Good
                 Good Good Good Good Good
@@ -107,16 +181,16 @@ export default function ResultPage() {
           </div>
           <div
             className="mt-1 cursor-pointer"
-            onClick={() => changeToggle("RED")}
+            onClick={() => changeToggle('RED')}
           >
             <span
               className="font-bold text-[#E84118] inline-block"
-              style={toggle === "RED" ? { transform: "rotate(90deg)" } : {}}
+              style={toggle === 'RED' ? { transform: 'rotate(90deg)' } : {}}
             >
               ▶
             </span>
             <span className="font-bold text-[#E84118]"> Potential Risks</span>
-            {toggle === "RED" && (
+            {toggle === 'RED' && (
               <div className="ml-4 text-[#E84118]">
                 Lorem ipsum dolor sit amet, consectetur api- scing elit, sed do
               </div>
@@ -190,9 +264,9 @@ export default function ResultPage() {
                 series={[
                   {
                     data: [
-                      { id: 0, value: 17, label: "Protein", color: "#F8A5C2" },
-                      { id: 1, value: 25, label: "Fat", color: "#FFD7F8" },
-                      { id: 2, value: 58, label: "Carbs", color: "#E86A9C" },
+                      { id: 0, value: 17, label: 'Protein', color: '#F8A5C2' },
+                      { id: 1, value: 25, label: 'Fat', color: '#FFD7F8' },
+                      { id: 2, value: 58, label: 'Carbs', color: '#E86A9C' },
                     ],
                   },
                 ]}

@@ -1,7 +1,7 @@
-export default function RightBubble() {
-	return (
-		<div className="flex w-full justify-end">
-			<div className="bubble bubble-right"></div>
-		</div>
-	);
+export default function RightBubble({ content }) {
+  return (
+    <div className="flex w-full justify-end">
+      <div className="bubble bubble-right min-h-fit">{content}</div>
+    </div>
+  );
 }
