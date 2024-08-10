@@ -2,17 +2,25 @@ export default function Page4() {
   return (
     <div className="px-[40px] bg-[#FFE6EF] h-full">
       <div>
-        <p>
+        <div>
           <div className="text-[20pt] pt-[200px] mb-[15px]">Almost There!</div>
           <div className="flex gap-[10px] items-center text-[14pt] text-[#707070] mb-[16px]">
-            <input type="checkbox" name="" id="" />
+            <input
+              type="checkbox"
+              name=""
+              id=""
+            />
             <p>Consent to personal data collection and use</p>
           </div>
           <div className="flex gap-[10px] items-center text-[14pt] text-[#707070]">
-            <input type="checkbox" name="" id="" />
+            <input
+              type="checkbox"
+              name=""
+              id=""
+            />
             <p>Consent to process sensitive information</p>
           </div>
-        </p>
+        </div>
       </div>
 
       <div
