@@ -40,3 +40,41 @@ body {
 .MuiChartsLegend-root {
   display: none;
 }
+
+.donutParent::before {
+  content: "";
+  position: absolute;
+  left: 14%;
+  margin: 0 auto;
+  width: 50px;
+  height: 50px;
+  z-index: 100;
+  border-radius: 50%;
+  background-color: white;
+}
+
+/* .whiteDonut {
+  position: absolute;
+  z-index: 10;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+} */
+
+.right-tri {
+  width: 0;
+  height: 0;
+  border-bottom: 25px solid transparent;
+  border-top: 25px solid transparent;
+  border-left: 40px solid #d8739b;
+  border-right: 40px solid transparent;
+}
+
+.left-tri {
+  width: 0;
+  height: 0;
+  border-bottom: 25px solid transparent;
+  border-top: 25px solid transparent;
+  border-left: 40px solid transparent;
+  border-right: 40px solid #d8739b;
+}

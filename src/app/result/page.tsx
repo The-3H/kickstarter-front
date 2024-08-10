@@ -5,9 +5,9 @@ import { PieChart } from "@mui/x-charts";
 
 export default function ResultPage() {
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col bg-[#FFE6EF] h-screen overflow-y-auto pb-8 overflow-x-hidden">
       <div className="bg-[#FFE6EF] w-full flex p-[30px] items-center gap-[10px]">
-        <div className="w-full flex items-center relative">
+        <div className="w-full flex items-center relative gap-2">
           <Image
             width={24}
             height={24}
@@ -17,7 +17,7 @@ export default function ResultPage() {
           />
           <input
             className="h-[50px] flex-[4] rounded-3xl border-[1px] shadow-xl pl-12 outline-none pr-4"
-            placeholder="Search Your Foold..."
+            placeholder="Search Your Food..."
           />
           <div className="flex-[1] text-[#F8A5C2] font-bold text-center">
             Cancel
@@ -26,7 +26,7 @@ export default function ResultPage() {
       </div>
       <div className="px-[30px] mt-[15px]">
         {/* 하얀 박스 1 */}
-        <div className="rounded-2xl shadow-xl p-[30px]">
+        <div className="rounded-2xl shadow-xl p-[30px] bg-white mb-12">
           {/* Lv. 2 Generally Good Food */}
           <div className="h-[36px] w-fit bg-[#EAEAED] rounded-3xl flex pr-6 items-center gap-2">
             <Image
@@ -81,48 +81,125 @@ export default function ResultPage() {
             <span className="font-bold text-[#E84118]">▶ Potential Risks</span>
           </div>
         </div>
+
         {/* 하얀 박스 2 */}
-        <div className="rounded-2xl shadow-xl p-[30px]">
+        <div className="rounded-2xl shadow-xl p-[30px] bg-white mb-12 relative pb-[16px]">
+          {/* 빨간색으으으으으으 */}
+          <div className="flex absolute -left-8 top-0 -translate-y-1/2">
+            <div className="h-[50px] bg-[#d8739b] flex items-center justify-end font-bold text-white pl-10 text-[18px]">
+              Recommended Intake
+            </div>
+            <div className="right-tri" />
+          </div>
+          <div className="mt-2 font-medium text-pretty">
+            Moderate consumption (1-2 servings per week)
+          </div>
+        </div>
+
+        {/* 하얀 박스 3 */}
+        <div className="rounded-2xl shadow-xl p-[30px] bg-white mb-8 relative pb-[16px]">
+          {/* 빨간색으으으으으으 */}
+          <div className="flex absolute -right-8 top-0 -translate-y-1/2">
+            <div className="left-tri" />
+            <div className="h-[50px] bg-[#d8739b] flex items-center justify-start font-bold text-white pr-10 text-[18px] text-nowrap">
+              Trimester-specific Recommendations
+            </div>
+          </div>
+          <div className="mt-2 font-medium text-pretty">
+            2nd trimester - Limit intake due to high sodium content; 3rd
+            trimester - Avoid excessive consu- mption to minimize risk of high
+            blood pressure
+          </div>
+        </div>
+        {/* 하얀 박스 4 */}
+        <div className="rounded-2xl shadow-xl p-[30px] bg-white">
           {/* Carbs : Protein : Fat */}
           <div className="flex justify-between mx-10">
             <div className="flex flex-col justify-between h-[60px] text-center">
-              <span className="text-[#718093] font-semibold">Carbs</span>
-              <span className="font-semibold">5.8</span>
+              <span className="text-[#718093] font-semibold text-lg">
+                Carbs
+              </span>
+              <span className="font-semibold text-lg">5.8</span>
             </div>
             <div className="flex flex-col justify-between h-[60px] text-center">
               <span></span>
-              <span>:</span>
+              <span className="text-lg">:</span>
             </div>
             <div className="flex flex-col justify-between h-[60px] text-center">
-              <span className="text-[#718093] font-semibold">Protein</span>
-              <span className="font-semibold">1.7</span>
+              <span className="text-[#718093] font-semibold text-lg">
+                Protein
+              </span>
+              <span className="font-semibold text-lg">1.7</span>
             </div>
             <div className="flex flex-col justify-between h-[60px] text-center">
               <span></span>
-              <span>:</span>
+              <span className="text-lg">:</span>
             </div>
             <div className="flex flex-col justify-between h-[60px] text-center">
-              <span className="text-[#718093] font-semibold">Fat</span>
-              <span className="font-semibold">2.5</span>
+              <span className="text-[#718093] font-semibold text-lg">Fat</span>
+              <span className="font-semibold text-lg">2.5</span>
             </div>
           </div>
           {/* 그래프 */}
-          <div className="h-[140px] flex justify-center items-center relative">
-            <PieChart
-              className="absolute left-0"
-              series={[
-                {
-                  data: [
-                    { id: 0, value: 17, label: "Protein", color: "#F8A5C2" },
-                    { id: 1, value: 25, label: "Fat", color: "#FFD7F8" },
-                    { id: 2, value: 58, label: "Carbs", color: "#E86A9C" },
-                  ],
-                },
-              ]}
-              width={200}
-              height={200}
-            />
-            {/* <div className="absolute w-4 h-4 bg-red-700" /> */}
+          <div className="relative">
+            <div className="h-[140px] flex justify-center items-center  relative">
+              <PieChart
+                className="donutParent absolute left-0 -top-5"
+                series={[
+                  {
+                    data: [
+                      { id: 0, value: 17, label: "Protein", color: "#F8A5C2" },
+                      { id: 1, value: 25, label: "Fat", color: "#FFD7F8" },
+                      { id: 2, value: 58, label: "Carbs", color: "#E86A9C" },
+                    ],
+                  },
+                ]}
+                width={200}
+                height={200}
+              />
+              <div className="whiteDonut"></div>
+              <div className="absolute right-0 bottom-3 w-[200px] h-[100px] flex flex-col justify-between py-2">
+                <div className="flex items-center">
+                  <div className="w-6 h-6 rounded-full bg-[#D8739B] mr-4" />
+                  <span className="flex-[3] font-semibold">Carbs</span>
+                  <span className="flex-[2] text-[#718093] font-semibold">
+                    58%
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-6 h-6 rounded-full bg-[#ECA9C1] mr-4" />
+                  <span className="flex-[3] font-semibold">Protein</span>
+                  <span className="flex-[2] text-[#718093] font-semibold">
+                    17%
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-6 h-6 rounded-full bg-[#FFD7F8] mr-4" />
+                  <span className="flex-[3] font-semibold">Fat</span>
+                  <span className="flex-[2] text-[#718093] font-semibold">
+                    25%
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* 하얀 박스 */}
+        <div className="rounded-2xl shadow-xl p-[30px] py-[16px] bg-white mb-2 mt-8 font-semibold">
+          <div className="mb-4">
+            <span>Save </span>
+            <span className="bg-[#DCDDE1] p-[5px] rounded-xl">$4.00</span>
+            <span> for a </span>
+            <span className="bg-[#DCDDE1] p-[5px] rounded-xl">Coffee</span>
+            <span> ?</span>
+          </div>
+          <div className="flex gap-6">
+            <div className="flex-1 text-center bg-[#FFDD5A] rounded-xl h-10 flex items-center justify-center">
+              Yes
+            </div>
+            <div className="flex-1 text-center bg-[#DCDDE1] rounded-xl h-10 flex items-center justify-center">
+              No
+            </div>
           </div>
         </div>
       </div>
