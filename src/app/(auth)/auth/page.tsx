@@ -1,11 +1,21 @@
+"use client";
+
+import { useSession, signIn } from "next-auth/react";
 import Image from "next/image";
 
 export default function AuthPage() {
+  const session = useSession();
+
+  console.log(session.data?.user);
+
   return (
     <div className="flex justify-center items-center flex-col h-full">
       <div className="mt-24 w-32 h-32 bg-purple-200 rounded-full" />
       <div className="mb-16" />
-      <div className="cursor-pointer flex justify-center items-center border-2 w-full h-[55px] text-[#B8B9BE] rounded-xl relative text-[18px]">
+      <div
+        className="cursor-pointer flex justify-center items-center border-2 w-full h-[55px] text-[#B8B9BE] rounded-xl relative text-[18px]"
+        onClick={() => signIn("google")}
+      >
         <Image
           src="/google.png"
           alt="Google Icon"
