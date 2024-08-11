@@ -12,6 +12,7 @@ import { calculateAge, getWeeksSince } from '@/utils/local';
 export default function ResultPage() {
   const [toggle, setToggle] = useState<null | 'GREEN' | 'RED'>(null);
   const [data, setData] = useState<TempData | null>(null);
+  const [data2, setData2] = useState<any | null>(null);
 
   const [keyword, setKeyword] = useState('');
 
@@ -56,23 +57,53 @@ export default function ResultPage() {
         setData(data);
       } catch (error) {
         console.error('데이터 가져오기 오류:', error);
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 3000));
       }
     }
-    // setData(tempData);
-    // console.log(tempData);
+  };
+
+  const getData2 = async () => {
+    const jj2 = {
+      food: search,
+    };
+    let good2 = false;
+    while (good2 === false) {
+      console.log('gogo');
+      try {
+        const response = await fetch('http://147.46.62.42:58000/avg_price', {
+          method: 'POST', // POST 메서드 명시
+          headers: {
+            'Content-Type': 'application/json', // JSON 형식 지정
+          },
+          body: JSON.stringify(jj2),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data);
+        good2 = true;
+        setData2(data);
+      } catch (error) {
+        console.error('데이터 가져오기 오류:', error);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+      }
+    }
   };
 
   useEffect(() => {
     getData();
+    getData2();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]); // 의존성 배열을 비워 컴포넌트 마운트 시에만 실행
 
   const router = useRouter();
 
-  console.log(data);
+  console.log(data, data2);
 
-  const nutrientEntries = Object.entries(tempData.nutrient_table.Nutrient);
+  const nutrientEntries = data
+    ? Object.entries(data.nutrient_table.Nutrient)
+    : null;
   return (
     <form
       className="w-full flex flex-col bg-[#FFE6EF] h-screen overflow-y-auto pb-8 overflow-x-hidden"
@@ -104,7 +135,7 @@ export default function ResultPage() {
           </div>
         </div>
       </div>
-      {data ? (
+      {data && nutrientEntries ? (
         <div className="px-[30px] mt-[15px] select-none">
           {/* 하얀 박스 1 */}
           <div className="rounded-2xl shadow-xl p-[30px] bg-white mb-12">
@@ -349,9 +380,11 @@ export default function ResultPage() {
           <div className="rounded-2xl shadow-xl p-[30px] py-[16px] bg-white mb-2 mt-8 font-semibold">
             <div className="mb-4">
               <span>Save </span>
-              <span className="bg-[#DCDDE1] p-[5px] rounded-xl">$4.00</span>
+              <span className="bg-[#DCDDE1] p-[5px] rounded-xl">
+                {data2 ? data2.price : 'loading'}
+              </span>
               <span> for a </span>
-              <span className="bg-[#DCDDE1] p-[5px] rounded-xl">Coffee</span>
+              <span className="bg-[#DCDDE1] p-[5px] rounded-xl">{search}</span>
               <span> ?</span>
             </div>
             <div className="flex gap-6">

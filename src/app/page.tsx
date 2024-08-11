@@ -1,5 +1,14 @@
-import AuthPage from "./(auth)/auth/page";
+"use client";
+
+import { useRouter } from "next/navigation";
+import HomePage from "./(tabs)/home/page";
+import { useEffect } from "react";
 
 export default function Home() {
-	return <AuthPage />;
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/home");
+  });
+  return <></>;
 }
