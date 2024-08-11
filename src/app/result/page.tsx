@@ -1,5 +1,7 @@
 'use client';
 
+"use client"
+
 import Image from 'next/image';
 import { PieChart } from '@mui/x-charts';
 import { useEffect, useState } from 'react';
@@ -15,6 +17,8 @@ export default function ResultPage() {
   const [data2, setData2] = useState<any | null>(null);
 
   const [keyword, setKeyword] = useState('');
+
+  
 
   const changeToggle = (option: 'GREEN' | 'RED') => {
     if (option === 'GREEN') {
@@ -388,7 +392,7 @@ export default function ResultPage() {
               <span> ?</span>
             </div>
             <div className="flex gap-6">
-              <div className="flex-1 text-center bg-[#FFDD5A] rounded-xl h-10 flex items-center justify-center">
+              <div className="flex-1 text-center bg-[#FFDD5A] rounded-xl h-10 flex items-center justify-center" onClick={()=>{router.push("/kick")}}>
                 Yes
               </div>
               <div className="flex-1 text-center bg-[#DCDDE1] rounded-xl h-10 flex items-center justify-center">
