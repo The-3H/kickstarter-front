@@ -1,11 +1,11 @@
-import Header from '@/components/header';
-import { url } from 'inspector';
-import Image from 'next/image';
+import Header from "@/components/header";
+import { url } from "inspector";
+import Image from "next/image";
 
 export default function KickPage() {
   return (
     <>
-      <Header title={'Kick'} />
+      <Header title={"Healthy Savings Account"} />
       {/* <div className="h-[72px] bg-[#FFE6EF]"></div> */}
       <main className="p-[40px] flex flex-col justify-center gap-[39px] mt-[72px]">
         <section className="w-full h-[174px] rounded-2xl translate-y-[-80px] kick-box bg-white p-[20px]">
@@ -18,8 +18,8 @@ export default function KickPage() {
               <Image
                 width={100}
                 height={100}
-                alt={'coin'}
-                src={'/coin.png'}
+                alt={"coin"}
+                src={"/coin.png"}
                 className="size-[22px]"
               />
               <p className="text-[#F78FB3]">250</p>
@@ -32,9 +32,9 @@ export default function KickPage() {
           <div
             className="w-[180px] h-[200px] rounded-3xl border-2 border-[#0000004D] p-[20px] text-white flex items-end font-extrabold kick-image relative overflow-hidden"
             style={{
-              objectFit: 'cover',
+              objectFit: "cover",
               backgroundImage: `url('https://imagedelivery.net/CJyrB-EkqcsF2D6ApJzEBg/e53f3db7-819f-46d5-3b50-66a8ca4f5300/public')`,
-              backgroundSize: 'cover',
+              backgroundSize: "cover",
             }}
           >
             <div className="z-10">
@@ -45,9 +45,9 @@ export default function KickPage() {
           <div
             className="w-[180px] h-[200px] rounded-3xl border-2 border-[#0000004D] p-[20px] text-white flex items-end font-extrabold kick-image relative overflow-hidden"
             style={{
-              objectFit: 'cover',
+              objectFit: "cover",
               backgroundImage: `url('https://imagedelivery.net/CJyrB-EkqcsF2D6ApJzEBg/e480dd62-46ea-4466-e8a7-ea6320a36a00/public')`,
-              backgroundSize: 'cover',
+              backgroundSize: "cover",
             }}
           >
             <div className="z-10">
@@ -60,7 +60,7 @@ export default function KickPage() {
           width={200}
           height={200}
           alt="coinpig"
-          src={'/coinpig.png'}
+          src={"/coinpig.png"}
           className="w-[300px] mx-[50px]"
         />
       </main>
