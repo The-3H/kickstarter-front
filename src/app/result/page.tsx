@@ -95,7 +95,7 @@ export default function ResultPage() {
         setData(data);
       } catch (error) {
         console.error("데이터 가져오기 오류:", error);
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 3000));
       }
     }
     // setData(tempData);
@@ -111,7 +111,9 @@ export default function ResultPage() {
 
   console.log(data);
 
-  const nutrientEntries = Object.entries(tempData.nutrient_table.Nutrient);
+  const nutrientEntries = data
+    ? Object.entries(data.nutrient_table.Nutrient)
+    : null;
   return (
     <form
       className="w-full flex flex-col bg-[#FFE6EF] h-screen overflow-y-auto pb-8 overflow-x-hidden"
@@ -143,7 +145,7 @@ export default function ResultPage() {
           </div>
         </div>
       </div>
-      {data ? (
+      {data && nutrientEntries ? (
         <div className="px-[30px] mt-[15px] select-none">
           {/* 하얀 박스 1 */}
           <div className="rounded-2xl shadow-xl p-[30px] bg-white mb-12">

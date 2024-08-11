@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 function getDaysSince(dateString: string) {
   // 주어진 날짜 문자열을 Date 객체로 변환
@@ -21,14 +21,14 @@ function getDaysSince(dateString: string) {
 }
 
 export default function HomePage() {
-  const [day, setDay] = useState<string>('');
+  const [day, setDay] = useState<string>("");
 
   const router = useRouter();
 
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
-    const dateString = localStorage.getItem('pregnancy')!;
+    const dateString = localStorage.getItem("pregnancy")!;
     const daysPassed = getDaysSince(dateString);
     setDay(`Day ${daysPassed}`);
   }, []);
@@ -74,27 +74,27 @@ export default function HomePage() {
             src="/baby.png"
           />
           <Image
-            className="absolute top-[60px] right-[100px]"
+            className="absolute top-[54px] right-[100px]"
             width={80}
             height={80}
             alt="party1"
             src="/party-1.png"
           />
           <Image
-            className="absolute top-[60px] left-[80px]"
+            className="absolute top-[56px] left-[60px]"
             width={80}
             height={80}
             alt="party2"
             src="/party-2.png"
           />
-          <div className="absolute top-0 right-10 text-[#B8B9BE] bg-white py-3 rounded-3xl px-6 font-bold">
+          <div className="absolute -top-2 right-10 text-black bg-white py-3 rounded-3xl px-6 font-extrabold shadow-lg">
             {day}
           </div>
         </div>
       </div>
       <div className="size-[1200px] bg-white rounded-full absolute top-[570px] -left-96" />
-      <div className="absolute top-[660px] text-[20px] w-[420px] text-center">
-        <div className="px-[30px] mb-4">
+      <div className="absolute top-[640px] text-[20px] w-[420px] text-center">
+        <div className="px-[30px] mb-6">
           Your little miracle is growing, and so are your savings!
         </div>
         <div className="text-[20px] w-full bg-[#FFDD5A] flex justify-center py-3 items-center rounded-3xl">
