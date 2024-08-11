@@ -1,54 +1,50 @@
-'use client';
+"use client";
 
-"use client"
-
-import Image from 'next/image';
-import { PieChart } from '@mui/x-charts';
-import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import tempData, { TempData } from '@/mock/tempData';
-import getLevelMsg from '@/utils/getLevelMsg';
-import getLevelColor from '@/utils/getLevelColor';
-import { calculateAge, getWeeksSince } from '@/utils/local';
+import Image from "next/image";
+import { PieChart } from "@mui/x-charts";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import tempData, { TempData } from "@/mock/tempData";
+import getLevelMsg from "@/utils/getLevelMsg";
+import getLevelColor from "@/utils/getLevelColor";
+import { calculateAge, getWeeksSince } from "@/utils/local";
 
 export default function ResultPage() {
-  const [toggle, setToggle] = useState<null | 'GREEN' | 'RED'>(null);
+  const [toggle, setToggle] = useState<null | "GREEN" | "RED">(null);
   const [data, setData] = useState<TempData | null>(null);
   const [data2, setData2] = useState<any | null>(null);
 
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState("");
 
-  
-
-  const changeToggle = (option: 'GREEN' | 'RED') => {
-    if (option === 'GREEN') {
-      if (toggle === 'GREEN') setToggle(null);
-      else setToggle('GREEN');
-    } else if (option === 'RED') {
-      if (toggle === 'RED') setToggle(null);
-      else setToggle('RED');
+  const changeToggle = (option: "GREEN" | "RED") => {
+    if (option === "GREEN") {
+      if (toggle === "GREEN") setToggle(null);
+      else setToggle("GREEN");
+    } else if (option === "RED") {
+      if (toggle === "RED") setToggle(null);
+      else setToggle("RED");
     }
   };
 
   const searchParams = useSearchParams();
 
-  const search = searchParams.get('search');
+  const search = searchParams.get("search");
 
   const getData = async () => {
     const jj = {
-      age: calculateAge(localStorage.getItem('birth') || ''),
-      pregnancy_week: getWeeksSince(localStorage.getItem('pregnancy') || ''),
+      age: calculateAge(localStorage.getItem("birth") || ""),
+      pregnancy_week: getWeeksSince(localStorage.getItem("pregnancy") || ""),
       input: search,
     };
     console.log(jj);
     let good = false;
     while (good === false) {
-      console.log('gogo');
+      console.log("gogo");
       try {
-        const response = await fetch('http://147.46.62.42:58000/search', {
-          method: 'POST', // POST 메서드 명시
+        const response = await fetch("http://147.46.62.42:58000/search", {
+          method: "POST", // POST 메서드 명시
           headers: {
-            'Content-Type': 'application/json', // JSON 형식 지정
+            "Content-Type": "application/json", // JSON 형식 지정
           },
           body: JSON.stringify(jj),
         });
@@ -60,7 +56,7 @@ export default function ResultPage() {
         good = true;
         setData(data);
       } catch (error) {
-        console.error('데이터 가져오기 오류:', error);
+        console.error("데이터 가져오기 오류:", error);
         await new Promise((resolve) => setTimeout(resolve, 3000));
       }
     }
@@ -72,12 +68,12 @@ export default function ResultPage() {
     };
     let good2 = false;
     while (good2 === false) {
-      console.log('gogo');
+      console.log("gogo");
       try {
-        const response = await fetch('http://147.46.62.42:58000/avg_price', {
-          method: 'POST', // POST 메서드 명시
+        const response = await fetch("http://147.46.62.42:58000/avg_price", {
+          method: "POST", // POST 메서드 명시
           headers: {
-            'Content-Type': 'application/json', // JSON 형식 지정
+            "Content-Type": "application/json", // JSON 형식 지정
           },
           body: JSON.stringify(jj2),
         });
@@ -89,7 +85,7 @@ export default function ResultPage() {
         good2 = true;
         setData2(data);
       } catch (error) {
-        console.error('데이터 가져오기 오류:', error);
+        console.error("데이터 가져오기 오류:", error);
         await new Promise((resolve) => setTimeout(resolve, 3000));
       }
     }
@@ -105,9 +101,14 @@ export default function ResultPage() {
 
   console.log(data, data2);
 
-  const nutrientEntries = data
-    ? Object.entries(data.nutrient_table.Nutrient)
-    : null;
+  let nutrientEntries = null;
+  try {
+    nutrientEntries = data
+      ? Object.entries(data.nutrient_table.Nutrient)
+      : null;
+  } catch {
+    // no
+  }
   return (
     <form
       className="w-full flex flex-col bg-[#FFE6EF] h-screen overflow-y-auto pb-8 overflow-x-hidden"
@@ -133,7 +134,7 @@ export default function ResultPage() {
           />
           <div
             className="flex-[1] text-[#F8A5C2] font-bold text-center cursor-pointer"
-            onClick={() => router.push('/home')}
+            onClick={() => router.push("/home")}
           >
             Cancel
           </div>
@@ -170,11 +171,14 @@ export default function ResultPage() {
                     const hasNext = nutrientEntries[nextIndex];
 
                     acc.push(
-                      <div key={index} className="flex gap-7">
+                      <div
+                        key={index}
+                        className="flex gap-7"
+                      >
                         <div className="flex flex-1 justify-between border-b-2 pb-2">
                           <span>{nutrient.trim()}</span>
                           <span>
-                            {tempData.nutrient_table['Amount per 100g'][
+                            {tempData.nutrient_table["Amount per 100g"][
                               key
                             ].trim()}
                           </span>
@@ -183,7 +187,7 @@ export default function ResultPage() {
                           <div className="flex flex-1 justify-between border-b-2 pb-2">
                             <span>{nutrientEntries[nextIndex][1].trim()}</span>
                             <span>
-                              {tempData.nutrient_table['Amount per 100g'][
+                              {tempData.nutrient_table["Amount per 100g"][
                                 nutrientEntries[nextIndex][0]
                               ].trim()}
                             </span>
@@ -199,37 +203,37 @@ export default function ResultPage() {
             </div>
             <div
               className="mt-4 cursor-pointer"
-              onClick={() => changeToggle('GREEN')}
+              onClick={() => changeToggle("GREEN")}
             >
               <span
                 className="font-bold text-[#35B748] inline-block"
-                style={toggle === 'GREEN' ? { transform: 'rotate(90deg)' } : {}}
+                style={toggle === "GREEN" ? { transform: "rotate(90deg)" } : {}}
               >
                 ▶
               </span>
               <span className="font-bold text-[#35B748]"> Benefits</span>
-              {toggle === 'GREEN' && (
+              {toggle === "GREEN" && (
                 <div className="ml-4 text-[#35B748]">
-                  {data.parsed_data.benefits_for_pregnancy.replace('- ', '')}
+                  {data.parsed_data.benefits_for_pregnancy.replace("- ", "")}
                 </div>
               )}
             </div>
             <div
               className="mt-1 cursor-pointer"
-              onClick={() => changeToggle('RED')}
+              onClick={() => changeToggle("RED")}
             >
               <span
                 className="font-bold text-[#E84118] inline-block"
-                style={toggle === 'RED' ? { transform: 'rotate(90deg)' } : {}}
+                style={toggle === "RED" ? { transform: "rotate(90deg)" } : {}}
               >
                 ▶
               </span>
               <span className="font-bold text-[#E84118]"> Potential Risks</span>
-              {toggle === 'RED' && (
+              {toggle === "RED" && (
                 <div className="ml-4 text-[#E84118]">
                   {data.parsed_data.potential_risks_or_contraindications.replace(
-                    '- ',
-                    ''
+                    "- ",
+                    ""
                   )}
                 </div>
               )}
@@ -246,7 +250,7 @@ export default function ResultPage() {
               <div className="right-tri" />
             </div>
             <div className="mt-2 font-medium text-pretty">
-              {data.parsed_data.preparation_tips.replace('- ', '')}
+              {data.parsed_data.preparation_tips.replace("- ", "")}
             </div>
           </div>
 
@@ -260,7 +264,7 @@ export default function ResultPage() {
               </div>
             </div>
             <div className="mt-2 font-medium text-pretty">
-              {data.parsed_data.alternative_options.replace('- ', '')}
+              {data.parsed_data.alternative_options.replace("- ", "")}
             </div>
           </div>
 
@@ -274,7 +278,7 @@ export default function ResultPage() {
               <div className="right-tri" />
             </div>
             <div className="mt-2 font-medium text-pretty">
-              {data.parsed_data.additional_information.replace('- ', '')}
+              {data.parsed_data.additional_information.replace("- ", "")}
             </div>
           </div>
 
@@ -287,7 +291,7 @@ export default function ResultPage() {
                   Carbs
                 </span>
                 <span className="font-semibold text-lg">
-                  {data.nutrient_table['Amount per 100g'][1].replace('g', '')}
+                  {data.nutrient_table["Amount per 100g"][1].replace("g", "")}
                 </span>
               </div>
               <div className="flex flex-col justify-between h-[60px] text-center">
@@ -299,7 +303,7 @@ export default function ResultPage() {
                   Protein
                 </span>
                 <span className="font-semibold text-lg">
-                  {data.nutrient_table['Amount per 100g'][2].replace('g', '')}
+                  {data.nutrient_table["Amount per 100g"][2].replace("g", "")}
                 </span>
               </div>
               <div className="flex flex-col justify-between h-[60px] text-center">
@@ -311,7 +315,7 @@ export default function ResultPage() {
                   Fat
                 </span>
                 <span className="font-semibold text-lg">
-                  {data.nutrient_table['Amount per 100g'][3].replace('g', '')}
+                  {data.nutrient_table["Amount per 100g"][3].replace("g", "")}
                 </span>
               </div>
             </div>
@@ -326,26 +330,26 @@ export default function ResultPage() {
                         {
                           id: 0,
                           value: +data.nutrient_table[
-                            'Amount per 100g'
-                          ][2].replace('g', ''),
-                          label: 'Protein',
-                          color: '#F8A5C2',
+                            "Amount per 100g"
+                          ][2].replace("g", ""),
+                          label: "Protein",
+                          color: "#F8A5C2",
                         },
                         {
                           id: 1,
                           value: +data.nutrient_table[
-                            'Amount per 100g'
-                          ][3].replace('g', ''),
-                          label: 'Fat',
-                          color: '#FFD7F8',
+                            "Amount per 100g"
+                          ][3].replace("g", ""),
+                          label: "Fat",
+                          color: "#FFD7F8",
                         },
                         {
                           id: 2,
                           value: +data.nutrient_table[
-                            'Amount per 100g'
-                          ][1].replace('g', ''),
-                          label: 'Carbs',
-                          color: '#E86A9C',
+                            "Amount per 100g"
+                          ][1].replace("g", ""),
+                          label: "Carbs",
+                          color: "#E86A9C",
                         },
                       ],
                     },
@@ -385,14 +389,19 @@ export default function ResultPage() {
             <div className="mb-4">
               <span>Save </span>
               <span className="bg-[#DCDDE1] p-[5px] rounded-xl">
-                {data2 ? data2.price : 'loading'}
+                {data2 ? data2.price : "loading"}
               </span>
               <span> for a </span>
               <span className="bg-[#DCDDE1] p-[5px] rounded-xl">{search}</span>
               <span> ?</span>
             </div>
             <div className="flex gap-6">
-              <div className="flex-1 text-center bg-[#FFDD5A] rounded-xl h-10 flex items-center justify-center" onClick={()=>{router.push("/kick")}}>
+              <div
+                className="flex-1 text-center bg-[#FFDD5A] rounded-xl h-10 flex items-center justify-center"
+                onClick={() => {
+                  router.push("/kick");
+                }}
+              >
                 Yes
               </div>
               <div className="flex-1 text-center bg-[#DCDDE1] rounded-xl h-10 flex items-center justify-center">
