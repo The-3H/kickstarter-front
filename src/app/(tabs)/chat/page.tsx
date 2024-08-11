@@ -3,16 +3,15 @@ import { useState, useEffect } from 'react';
 import LeftBubble from '@/components/chat/left';
 import RightBubble from '@/components/chat/right';
 import Header from '@/components/header';
-import { calculateAge, getWeeksSince } from '@/app/result/page';
-import Image from 'next/image';
+import { calculateAge, getWeeksSince } from '@/utils/local';
 
-function splitResponseIntoBubbles(response) {
+function splitResponseIntoBubbles(response: string) {
   // '**'로 분할하되, '**'도 결과에 포함시킵니다.
-  const parts = response.split(/(\*\*)/).filter((part) => part !== '');
+  const parts = response.split(/(\*\*)/).filter((part: string) => part !== '');
   const bubbles: string[] = [];
   let currentBubble = '';
 
-  parts.forEach((part, index) => {
+  parts.forEach((part: string, index: number) => {
     if (part === '**') {
       if (currentBubble) {
         bubbles.push(currentBubble.trim());
@@ -47,6 +46,7 @@ export default function ChatPage() {
     if (!input.trim()) return;
 
     const newMessages = [...messages, { type: 'right', content: input }];
+    //@ts-ignore
     setMessages(newMessages);
     setInput('');
 
@@ -86,6 +86,7 @@ export default function ChatPage() {
           content: bubble,
         })),
       ];
+      //@ts-ignore
       setMessages(updatedMessages);
 
       localStorage.setItem('chatMessages', JSON.stringify(updatedMessages));
@@ -99,9 +100,12 @@ export default function ChatPage() {
       <Header title={'Dr. AI'} />
       <main className="overflow-scroll w-full h-full px-[40px] flex flex-col gap-[15px] pb-[300px] pt-[50px] scrollbar-hide">
         {messages.map((message, index) =>
+          //@ts-ignore
           message.type === 'left' ? (
+            //@ts-ignore
             <LeftBubble key={index} content={message.content} />
           ) : (
+            //@ts-ignore
             <RightBubble key={index} content={message.content} />
           )
         )}
