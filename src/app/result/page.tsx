@@ -76,27 +76,28 @@ export default function ResultPage() {
     };
     console.log(jj);
     let good = false;
-    // while (good === false) {
-    //   console.log("gogo");
-    //   try {
-    //     const response = await fetch("http://147.46.62.42:58000/search", {
-    //       method: "POST", // POST 메서드 명시
-    //       headers: {
-    //         "Content-Type": "application/json", // JSON 형식 지정
-    //       },
-    //       body: JSON.stringify(jj),
-    //     });
-    //     if (!response.ok) {
-    //       throw new Error(`HTTP error! status: ${response.status}`);
-    //     }
-    //     const data = await response.json();
-    //     console.log(data);
-    //     good = true;
-    //     setData(data);
-    //   } catch (error) {
-    //     console.error("데이터 가져오기 오류:", error);
-    //   }
-    // }
+    while (good === false) {
+      console.log("gogo");
+      try {
+        const response = await fetch("http://147.46.62.42:58000/search", {
+          method: "POST", // POST 메서드 명시
+          headers: {
+            "Content-Type": "application/json", // JSON 형식 지정
+          },
+          body: JSON.stringify(jj),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data);
+        good = true;
+        setData(data);
+      } catch (error) {
+        console.error("데이터 가져오기 오류:", error);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+    }
     // setData(tempData);
     // console.log(tempData);
   };
@@ -107,6 +108,8 @@ export default function ResultPage() {
   }, [search]); // 의존성 배열을 비워 컴포넌트 마운트 시에만 실행
 
   const router = useRouter();
+
+  console.log(data);
 
   const nutrientEntries = Object.entries(tempData.nutrient_table.Nutrient);
   return (
