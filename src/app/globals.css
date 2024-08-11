@@ -46,6 +46,36 @@ body {
   border-right: 40px solid #d8739b;
 }
 
-.MuiChartsLegend-root .MuiChartsLegend-column {
-  dispaly: none;
+.bubble {
+  width: 270px;
+  max-height: fit-content;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3px 0;
+  padding: 10px;
+  box-shadow: 0 2px 3px rgba(87, 72, 72, 0.1);
+}
+
+.bubble-left {
+  background-color: #f4f4f7;
+  border-radius: 25px 25px 25px 0px;
+}
+.bubble-right {
+  background-color: #ffe6e6;
+  border-radius: 25px 25px 0px 25px;
+}
+
+.kick-box {
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+}
+.kick-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3); /* 검은색 오버레이, 투명도 조절 가능 */
 }
